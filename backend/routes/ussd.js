@@ -5,7 +5,7 @@ const smsService = require("../services/smsService");
 const { normalizePhoneNumber } = require("../utils/phone");
 const Product = require("../models/Product");
 const Merchant = require("../models/Merchant");
-const aiService = require("../services/gemini");
+// AI assistant removed
 
 // In-memory customer session store (ephemeral).
 const customerSessions = new Map();
@@ -268,31 +268,9 @@ router.post("/", async (req, res) => {
         return sendMenu("END Weekly report has been sent to your phone via SMS.");
       }
 
-      // Option 7: AI Assistant (Async Safety & Timeout)
+      // Option 7: AI Assistant removed
       if (option === "7") {
-        if (merchantSteps.length === 1) return sendMenu(`CON AI Assistant
-1. Weekly Summary
-2. Promo Suggestion
-3. Inventory Advice
-0. Back`);
-
-        if (merchantSteps.length === 2) {
-          if (merchantSteps[1] === "0") return sendMenu(mainMenu());
-          const topics = { "1": "summary", "2": "promo", "3": "inventory" };
-          const topic = topics[merchantSteps[1]] || "summary";
-
-          // Timeout race to prevent USSD hang
-          const aiResponse = await Promise.race([
-            aiService.generateAIAssistantMessage(merchant._id, topic),
-            new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 8000))
-          ]).catch(err => {
-            console.error("AI Error or Timeout:", err.message);
-            return "AI is taking too long. We will send the advice via SMS shortly.";
-          });
-
-          return sendMenu(`END AI Assistant:\n${aiResponse}`);
-        }
-        return sendMenu("END Invalid AI option.");
+        return sendMenu("END AI Assistant is currently unavailable.");
       }
 
       // Option 8: Customer Orders
