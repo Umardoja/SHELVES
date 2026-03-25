@@ -1,0 +1,9 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+backend/config/vertex-config.json
+backend/config/vertex-key.json
+backend/config/vertex-key.json
